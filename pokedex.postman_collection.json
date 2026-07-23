@@ -1,0 +1,167 @@
+{
+  "info": {
+    "name": "Pokedex API",
+    "description": "Colección de endpoints para la prueba técnica Pokédex (Spring Boot 3 + PostgreSQL 18). Incluye ejemplos válidos e inválidos para cada endpoint.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api" }
+  ],
+  "item": [
+    {
+      "name": "Pokemon",
+      "item": [
+        {
+          "name": "Listar todos los Pokemon",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/pokemon", "host": ["{{baseUrl}}"], "path": ["pokemon"] }
+          }
+        },
+        {
+          "name": "Listar Pokemon filtrados por tipo (Agua)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/pokemon?tipo=Agua",
+              "host": ["{{baseUrl}}"],
+              "path": ["pokemon"],
+              "query": [{ "key": "tipo", "value": "Agua" }]
+            }
+          }
+        },
+        {
+          "name": "Registrar Pokemon - válido",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Eevee\",\n  \"tipo\": \"Normal\",\n  \"nivel\": 10,\n  \"fechaCaptura\": \"2024-07-01\",\n  \"entrenadorId\": 1\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/pokemon", "host": ["{{baseUrl}}"], "path": ["pokemon"] }
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "name": "Registrar Pokemon - inválido (campos obligatorios faltantes)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entrenadorId\": 1\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/pokemon", "host": ["{{baseUrl}}"], "path": ["pokemon"] },
+            "description": "Debe responder 400 con detalles de validación: nombre, tipo y nivel son obligatorios."
+          }
+        },
+        {
+          "name": "Registrar Pokemon - inválido (entrenador inexistente)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ghost\",\n  \"tipo\": \"Fantasma\",\n  \"nivel\": 5,\n  \"entrenadorId\": 999\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/pokemon", "host": ["{{baseUrl}}"], "path": ["pokemon"] },
+            "description": "Debe responder 404 porque el entrenador con id 999 no existe."
+          }
+        },
+        {
+          "name": "Editar nivel - válido",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nivel\": 26\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/pokemon/1/nivel", "host": ["{{baseUrl}}"], "path": ["pokemon", "1", "nivel"] }
+          }
+        },
+        {
+          "name": "Editar nivel - inválido (fuera de rango)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nivel\": 150\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/pokemon/1/nivel", "host": ["{{baseUrl}}"], "path": ["pokemon", "1", "nivel"] },
+            "description": "Debe responder 400 porque el nivel máximo permitido es 100."
+          }
+        },
+        {
+          "name": "Editar nivel - inválido (Pokemon inexistente)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nivel\": 20\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/pokemon/999/nivel", "host": ["{{baseUrl}}"], "path": ["pokemon", "999", "nivel"] },
+            "description": "Debe responder 404 porque no existe un Pokémon con id 999."
+          }
+        },
+        {
+          "name": "Eliminar Pokemon - válido",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/pokemon/1", "host": ["{{baseUrl}}"], "path": ["pokemon", "1"] },
+            "description": "Debe responder 204 No Content. Cambia el id por uno existente antes de ejecutar."
+          }
+        },
+        {
+          "name": "Eliminar Pokemon - inválido (inexistente)",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/pokemon/999", "host": ["{{baseUrl}}"], "path": ["pokemon", "999"] },
+            "description": "Debe responder 404 porque no existe un Pokémon con id 999."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Entrenador",
+      "item": [
+        {
+          "name": "Listar Entrenadores",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/entrenadores", "host": ["{{baseUrl}}"], "path": ["entrenadores"] }
+          }
+        },
+        {
+          "name": "Registrar Entrenador - válido",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Gary Oak\",\n  \"ciudad\": \"Pueblo Paleta\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/entrenadores", "host": ["{{baseUrl}}"], "path": ["entrenadores"] }
+          }
+        },
+        {
+          "name": "Registrar Entrenador - inválido (sin nombre)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ciudad\": \"Ciudad Verde\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/entrenadores", "host": ["{{baseUrl}}"], "path": ["entrenadores"] },
+            "description": "Debe responder 400 porque el nombre del entrenador es obligatorio."
+          }
+        }
+      ]
+    }
+  ]
+}

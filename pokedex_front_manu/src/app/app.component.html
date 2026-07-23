@@ -1,13 +1,19 @@
-<main class="contenedor">
-  <h1>Pokédex</h1>
+<div class="shell">
+  <app-sidebar></app-sidebar>
 
-  <div class="layout">
-    <aside>
-      <app-pokemon-form (registrado)="onRegistrado()"></app-pokemon-form>
-    </aside>
+  <div class="area-principal">
+    <app-header></app-header>
 
-    <section class="listado">
-      <app-pokemon-list></app-pokemon-list>
-    </section>
+    <main class="contenido">
+      <div class="layout">
+        <aside>
+          <app-pokemon-form (registrado)="onRegistrado()"></app-pokemon-form>
+        </aside>
+
+        <section class="listado">
+          <app-pokemon-list></app-pokemon-list>
+        </section>
+      </div>
+    </main>
   </div>
-</main>
+</div>

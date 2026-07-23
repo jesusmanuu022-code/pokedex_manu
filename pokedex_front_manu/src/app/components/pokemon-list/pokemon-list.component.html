@@ -1,4 +1,4 @@
-<section class="controles">
+<section class="barra-filtros">
   <div class="control">
     <label for="filtroTipo">Filtrar por tipo</label>
     <select
@@ -6,7 +6,7 @@
       [ngModel]="pokemonService.filtroTipo()"
       (ngModelChange)="onFiltroTipoChange($event)"
     >
-      <option value="">Todos</option>
+      <option value="">Todos los tipos</option>
       <option *ngFor="let t of tiposBase" [value]="t">{{ t }}</option>
     </select>
   </div>
@@ -16,25 +16,57 @@
     <input
       id="busqueda"
       type="text"
-      placeholder="Ej. Pikachu"
+      placeholder="Buscar..."
       [ngModel]="pokemonService.busqueda()"
       (ngModelChange)="onBusquedaChange($event)"
     />
   </div>
 
   <div class="control">
-    <label for="orden">Ordenar por nivel</label>
+    <label for="orden">Ordenar por</label>
     <select
       id="orden"
       [ngModel]="pokemonService.ordenNivel()"
       (ngModelChange)="pokemonService.setOrdenNivel($event)"
     >
       <option [ngValue]="null">Sin orden</option>
-      <option value="asc">Menor a mayor</option>
-      <option value="desc">Mayor a menor</option>
+      <option value="desc">Nivel: Mayor a menor</option>
+      <option value="asc">Nivel: Menor a mayor</option>
     </select>
   </div>
+
+  <button type="button" class="btn-limpiar" (click)="limpiarFiltros()">Limpiar filtros</button>
 </section>
+
+<div class="barra-resultados">
+  <h2>Pokémon registrados ({{ pokemonService.pokemonesFiltrados().length }})</h2>
+
+  <div class="toggle-vista">
+    <button
+      type="button"
+      [class.activo]="vista === 'grid'"
+      (click)="cambiarVista('grid')"
+      aria-label="Vista de tarjetas"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6" />
+        <rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6" />
+        <rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6" />
+        <rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6" />
+      </svg>
+    </button>
+    <button
+      type="button"
+      [class.activo]="vista === 'lista'"
+      (click)="cambiarVista('lista')"
+      aria-label="Vista de lista"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+</div>
 
 <p class="mensaje-error" *ngIf="pokemonService.error() as error">{{ error }}</p>
 
@@ -44,26 +76,44 @@
   No hay Pokémon registrados
 </p>
 
-<div class="grid-tarjetas">
+<div class="grid-tarjetas" [class.vista-lista]="vista === 'lista'">
   <article class="tarjeta" *ngFor="let p of pokemonService.pokemonesFiltrados()">
     <header>
-      <h3>{{ p.nombre }}</h3>
-      <span class="tipo-badge">{{ p.tipo }}</span>
+      <div class="identidad">
+        <app-pokemon-avatar [size]="44"></app-pokemon-avatar>
+        <h3>{{ p.nombre }}</h3>
+      </div>
+
+      <div class="menu-contenedor">
+        <button type="button" class="btn-kebab" (click)="toggleMenu(p)" aria-label="Más opciones">⋮</button>
+        <div class="menu-desplegable" *ngIf="menuAbiertoId === p.id">
+          <button type="button" (click)="abrirEditarNivel(p)">Editar nivel</button>
+          <button type="button" class="peligro" (click)="pedirConfirmacionEliminar(p)">Eliminar</button>
+        </div>
+      </div>
     </header>
+
+    <span class="tipo-badge" [style.background]="colorPorTipo(p.tipo).bg" [style.color]="colorPorTipo(p.tipo).text">
+      <span class="tipo-dot" [style.background]="colorPorTipo(p.tipo).dot"></span>
+      {{ p.tipo }}
+    </span>
 
     <p class="entrenador">Entrenador: {{ p.entrenadorNombre }}</p>
     <p class="fecha" *ngIf="p.fechaCaptura">Capturado: {{ p.fechaCaptura }}</p>
+    <p class="nivel-texto">★ Nivel: {{ p.nivel }}</p>
 
     <div class="nivel-info">
-      <span>Nivel {{ p.nivel }}</span>
+      <span>HP</span>
       <div class="barra-nivel">
         <div class="barra-nivel-fill" [style.width.%]="porcentajeNivel(p.nivel)"></div>
       </div>
+      <span class="porcentaje">{{ porcentajeNivel(p.nivel) }}%</span>
     </div>
 
     <div class="acciones-tarjeta">
-      <button class="btn btn-nivel" (click)="subirNivel(p)" [disabled]="p.nivel >= 100">+1 Nivel</button>
-      <button class="btn btn-eliminar" (click)="pedirConfirmacionEliminar(p)">Eliminar</button>
+      <button class="btn btn-nivel" (click)="subirNivel(p)" [disabled]="p.nivel >= 100">↑ Subir nivel</button>
+      <button class="btn btn-editar" (click)="abrirEditarNivel(p)">✎ Editar</button>
+      <button class="btn btn-eliminar" (click)="pedirConfirmacionEliminar(p)">🗑 Eliminar</button>
     </div>
   </article>
 </div>
@@ -75,3 +125,11 @@
   (confirmar)="confirmarEliminar()"
   (cancelar)="cerrarDialogo()"
 ></app-confirm-dialog>
+
+<app-edit-nivel-dialog
+  [visible]="editDialogoVisible"
+  [nombrePokemon]="pokemonAEditar?.nombre ?? ''"
+  [nivelActual]="pokemonAEditar?.nivel ?? 1"
+  (guardar)="guardarNivelEditado($event)"
+  (cancelar)="cerrarEditarNivel()"
+></app-edit-nivel-dialog>

@@ -3,7 +3,13 @@
 
   <div class="campo">
     <label for="nombre">Nombre *</label>
-    <input id="nombre" type="text" formControlName="nombre" placeholder="Ej. Charmander" />
+    <div class="input-icono">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
+        <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+      </svg>
+      <input id="nombre" type="text" formControlName="nombre" placeholder="Ej. Pikachu" />
+    </div>
     <small class="error" *ngIf="form.controls.nombre.invalid && form.controls.nombre.touched">
       El nombre es obligatorio
     </small>
@@ -11,7 +17,18 @@
 
   <div class="campo">
     <label for="tipo">Tipo *</label>
-    <input id="tipo" type="text" formControlName="tipo" placeholder="Ej. Fuego" />
+    <div class="input-icono">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path
+          d="m12 2 8.5 8.5a2 2 0 0 1 0 2.8L14 20a2 2 0 0 1-2.8 0L3 11.5V4a2 2 0 0 1 2-2h7Z"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linejoin="round"
+        />
+        <circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" />
+      </svg>
+      <input id="tipo" type="text" formControlName="tipo" placeholder="Ej. Eléctrico" />
+    </div>
     <small class="error" *ngIf="form.controls.tipo.invalid && form.controls.tipo.touched">
       El tipo es obligatorio
     </small>
@@ -19,7 +36,17 @@
 
   <div class="campo">
     <label for="nivel">Nivel *</label>
-    <input id="nivel" type="number" formControlName="nivel" min="1" max="100" />
+    <div class="input-icono">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path
+          d="m12 3 2.6 5.6 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6-4.4-4.1 6-.7L12 3Z"
+          stroke="currentColor"
+          stroke-width="1.4"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <input id="nivel" type="number" formControlName="nivel" min="1" max="100" placeholder="Ej. 5" />
+    </div>
     <small class="error" *ngIf="form.controls.nivel.invalid && form.controls.nivel.touched">
       El nivel debe estar entre 1 y 100
     </small>
@@ -27,15 +54,27 @@
 
   <div class="campo">
     <label for="fechaCaptura">Fecha de captura</label>
-    <input id="fechaCaptura" type="date" formControlName="fechaCaptura" />
+    <div class="input-icono">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <rect x="3.5" y="5" width="17" height="15" rx="2" stroke="currentColor" stroke-width="1.5" />
+        <path d="M3.5 9.5h17M8 3v3.5M16 3v3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+      <input id="fechaCaptura" type="date" formControlName="fechaCaptura" />
+    </div>
   </div>
 
   <div class="campo">
     <label for="entrenadorId">Entrenador *</label>
-    <select id="entrenadorId" formControlName="entrenadorId">
-      <option [ngValue]="null">Selecciona un entrenador</option>
-      <option *ngFor="let e of entrenadores" [ngValue]="e.id">{{ e.nombre }}</option>
-    </select>
+    <div class="input-icono">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.5" />
+        <path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+      <select id="entrenadorId" formControlName="entrenadorId">
+        <option [ngValue]="null">Selecciona un entrenador</option>
+        <option *ngFor="let e of entrenadores" [ngValue]="e.id">{{ e.nombre }}</option>
+      </select>
+    </div>
     <small class="error" *ngIf="form.controls.entrenadorId.invalid && form.controls.entrenadorId.touched">
       Debes seleccionar un entrenador
     </small>
@@ -46,4 +85,6 @@
   <button type="submit" class="btn btn-primario" [disabled]="enviando">
     {{ enviando ? 'Guardando...' : 'Registrar Pokémon' }}
   </button>
+
+  <p class="nota-obligatorios">* Campos obligatorios</p>
 </form>

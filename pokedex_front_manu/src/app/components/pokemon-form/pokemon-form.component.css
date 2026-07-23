@@ -1,56 +1,90 @@
 .form-registro {
-  background: #f7f7f7;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background: var(--blanco);
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radio-base);
   padding: 1.5rem;
-  max-width: 420px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.9rem;
+}
+
+.form-registro h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
 }
 
 .campo {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.3rem;
 }
 
 label {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
+  color: var(--gris-texto-oscuro);
 }
 
-input,
-select {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 0.95rem;
+.input-icono {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--gris-borde);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  color: var(--gris-texto);
+  background: var(--gris-fondo);
+}
+
+.input-icono:focus-within {
+  border-color: var(--rojo-primario);
+  background: var(--blanco);
+}
+
+.input-icono input,
+.input-icono select {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.9rem;
+  width: 100%;
+  color: var(--gris-texto-oscuro);
 }
 
 .error {
   color: #d32f2f;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
 }
 
 .error.servidor {
   font-weight: 600;
 }
 
+.nota-obligatorios {
+  font-size: 0.75rem;
+  color: var(--gris-texto);
+  margin: 0;
+}
+
 .btn {
-  padding: 0.6rem 1rem;
+  padding: 0.7rem 1rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .btn-primario {
-  background: #1976d2;
+  background: var(--rojo-primario);
   color: white;
 }
 
+.btn-primario:hover:not(:disabled) {
+  background: var(--rojo-hover);
+}
+
 .btn-primario:disabled {
-  background: #90a4ae;
+  background: #ef9a9a;
   cursor: not-allowed;
 }

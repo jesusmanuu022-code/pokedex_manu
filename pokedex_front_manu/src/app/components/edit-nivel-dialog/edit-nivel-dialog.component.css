@@ -1,0 +1,73 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radio-base, 10px);
+  min-width: 320px;
+  max-width: 90vw;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dialog h3 {
+  margin: 0 0 0.5rem;
+}
+
+.dialog p {
+  margin: 0 0 1rem;
+  color: var(--gris-texto, #616161);
+  font-size: 0.9rem;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--gris-borde, #ccc);
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 0.8rem;
+  margin: 0.4rem 0 0;
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-secundario {
+  background: #e0e0e0;
+}
+
+.btn-primario {
+  background: var(--rojo-primario, #e3350d);
+  color: white;
+}

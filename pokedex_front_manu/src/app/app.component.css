@@ -1,22 +1,31 @@
-.contenedor {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1.5rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+.shell {
+  display: flex;
+  min-height: 100vh;
 }
 
-h1 {
-  margin-bottom: 1.5rem;
+.area-principal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.contenido {
+  padding: 1.5rem;
 }
 
 .layout {
   display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 2rem;
+  grid-template-columns: 300px 1fr;
+  gap: 1.5rem;
   align-items: start;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
+  .shell {
+    flex-direction: column;
+  }
+
   .layout {
     grid-template-columns: 1fr;
   }

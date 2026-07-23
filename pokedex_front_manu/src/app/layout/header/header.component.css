@@ -1,0 +1,122 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1.25rem 1.5rem;
+  background: var(--blanco);
+  border-bottom: 1px solid var(--gris-borde);
+}
+
+.titulo-bloque h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.titulo-bloque p {
+  margin: 0.15rem 0 0;
+  color: var(--gris-texto);
+  font-size: 0.85rem;
+}
+
+.acciones-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.buscador {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--gris-fondo);
+  border: 1px solid var(--gris-borde);
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  color: var(--gris-texto);
+  min-width: 220px;
+}
+
+.buscador input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+.icono-boton {
+  position: relative;
+  background: var(--gris-fondo);
+  border: 1px solid var(--gris-borde);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--gris-texto-oscuro);
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--rojo-primario);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.avatar-usuario {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--rojo-primario);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.usuario-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.usuario-nombre {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.usuario-rol {
+  font-size: 0.75rem;
+  color: var(--gris-texto);
+}
+
+@media (max-width: 700px) {
+  .usuario-info {
+    display: none;
+  }
+
+  .buscador {
+    min-width: 140px;
+  }
+}

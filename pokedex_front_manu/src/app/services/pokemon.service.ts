@@ -58,6 +58,15 @@ export class PokemonService {
     this.ordenNivelSignal.set(orden);
   }
 
+  limpiarFiltros(): void {
+    this.busquedaSignal.set('');
+    this.ordenNivelSignal.set(null);
+    if (this.filtroTipoSignal()) {
+      this.filtroTipoSignal.set('');
+      this.cargar();
+    }
+  }
+
   cargar(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);

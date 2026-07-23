@@ -1,0 +1,16 @@
+<div class="overlay" *ngIf="visible">
+  <div class="dialog">
+    <h3>Editar nivel</h3>
+    <p>Establece el nivel exacto de <strong>{{ nombrePokemon }}</strong>.</p>
+
+    <label for="nivelExacto">Nivel (1-100)</label>
+    <input id="nivelExacto" type="number" min="1" max="100" [(ngModel)]="nivel" />
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+    <div class="acciones">
+      <button class="btn btn-secundario" (click)="cancelar.emit()">Cancelar</button>
+      <button class="btn btn-primario" (click)="onGuardar()">Guardar</button>
+    </div>
+  </div>
+</div>

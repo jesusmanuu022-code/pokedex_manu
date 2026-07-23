@@ -1,34 +1,91 @@
-.controles {
+.barra-filtros {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  align-items: flex-end;
+  gap: 1.25rem;
+  background: var(--blanco);
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radio-base);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .control {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.3rem;
 }
 
 .control label {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 600;
+  color: var(--gris-texto);
 }
 
 .control select,
 .control input {
-  padding: 0.4rem 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  min-width: 180px;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--gris-borde);
+  border-radius: 6px;
+  min-width: 170px;
+  font-size: 0.85rem;
+}
+
+.btn-limpiar {
+  margin-left: auto;
+  background: var(--rojo-suave);
+  color: var(--rojo-primario);
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  height: fit-content;
+}
+
+.barra-resultados {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.barra-resultados h2 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.toggle-vista {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--gris-fondo);
+  border: 1px solid var(--gris-borde);
+  border-radius: 8px;
+  padding: 0.2rem;
+}
+
+.toggle-vista button {
+  border: none;
+  background: transparent;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--gris-texto);
+  display: flex;
+}
+
+.toggle-vista button.activo {
+  background: var(--blanco);
+  color: var(--rojo-primario);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 .mensaje-error {
-  background: #fdecea;
+  background: var(--rojo-suave);
   color: #b71c1c;
   padding: 0.75rem 1rem;
-  border-radius: 4px;
+  border-radius: 8px;
   margin-bottom: 1rem;
 }
 
@@ -39,48 +96,125 @@
 
 .grid-tarjetas {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1rem;
 }
 
+.grid-tarjetas.vista-lista {
+  grid-template-columns: 1fr;
+}
+
 .tarjeta {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radio-base);
   padding: 1rem;
-  background: white;
+  background: var(--blanco);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 .tarjeta header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.identidad {
+  display: flex;
   align-items: center;
+  gap: 0.6rem;
+}
+
+.identidad h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.menu-contenedor {
+  position: relative;
+}
+
+.btn-kebab {
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--gris-texto);
+  line-height: 1;
+  padding: 0.15rem 0.4rem;
+}
+
+.menu-desplegable {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: var(--blanco);
+  border: 1px solid var(--gris-borde);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 20;
+  min-width: 140px;
+  overflow: hidden;
+}
+
+.menu-desplegable button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.menu-desplegable button:hover {
+  background: var(--gris-fondo);
+}
+
+.menu-desplegable button.peligro {
+  color: #c62828;
 }
 
 .tipo-badge {
-  background: #e3f2fd;
-  color: #1565c0;
-  padding: 0.15rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.tipo-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
 }
 
 .entrenador,
-.fecha {
-  font-size: 0.85rem;
-  color: #555;
-  margin: 0.25rem 0;
+.fecha,
+.nivel-texto {
+  font-size: 0.82rem;
+  color: var(--gris-texto);
+  margin: 0.2rem 0;
 }
 
 .nivel-info {
-  margin: 0.75rem 0;
-  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.6rem 0 0.75rem;
+  font-size: 0.78rem;
+  color: var(--gris-texto);
 }
 
 .barra-nivel {
+  flex: 1;
   background: #eee;
   border-radius: 4px;
   height: 8px;
-  margin-top: 0.25rem;
   overflow: hidden;
 }
 
@@ -89,22 +223,29 @@
   height: 100%;
 }
 
+.porcentaje {
+  min-width: 32px;
+  text-align: right;
+}
+
 .acciones-tarjeta {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
 
 .btn {
-  padding: 0.4rem 0.75rem;
+  padding: 0.4rem 0.65rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
+  flex: 1;
+  white-space: nowrap;
 }
 
 .btn-nivel {
-  background: #1976d2;
+  background: #2e7d32;
   color: white;
 }
 
@@ -113,7 +254,33 @@
   cursor: not-allowed;
 }
 
+.btn-editar {
+  background: var(--rojo-suave);
+  color: var(--rojo-primario);
+  border: 1px solid #f3c6bd;
+}
+
 .btn-eliminar {
   background: #e53935;
   color: white;
+}
+
+.vista-lista .tarjeta {
+  display: grid;
+  grid-template-columns: minmax(180px, 260px) auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vista-lista .tarjeta header {
+  margin-bottom: 0;
+}
+
+.vista-lista .nivel-info {
+  margin: 0;
+  min-width: 160px;
+}
+
+.vista-lista .acciones-tarjeta {
+  flex-wrap: nowrap;
 }

@@ -1,0 +1,49 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-registro">
+  <h2>Registrar nuevo Pokémon</h2>
+
+  <div class="campo">
+    <label for="nombre">Nombre *</label>
+    <input id="nombre" type="text" formControlName="nombre" placeholder="Ej. Charmander" />
+    <small class="error" *ngIf="form.controls.nombre.invalid && form.controls.nombre.touched">
+      El nombre es obligatorio
+    </small>
+  </div>
+
+  <div class="campo">
+    <label for="tipo">Tipo *</label>
+    <input id="tipo" type="text" formControlName="tipo" placeholder="Ej. Fuego" />
+    <small class="error" *ngIf="form.controls.tipo.invalid && form.controls.tipo.touched">
+      El tipo es obligatorio
+    </small>
+  </div>
+
+  <div class="campo">
+    <label for="nivel">Nivel *</label>
+    <input id="nivel" type="number" formControlName="nivel" min="1" max="100" />
+    <small class="error" *ngIf="form.controls.nivel.invalid && form.controls.nivel.touched">
+      El nivel debe estar entre 1 y 100
+    </small>
+  </div>
+
+  <div class="campo">
+    <label for="fechaCaptura">Fecha de captura</label>
+    <input id="fechaCaptura" type="date" formControlName="fechaCaptura" />
+  </div>
+
+  <div class="campo">
+    <label for="entrenadorId">Entrenador *</label>
+    <select id="entrenadorId" formControlName="entrenadorId">
+      <option [ngValue]="null">Selecciona un entrenador</option>
+      <option *ngFor="let e of entrenadores" [ngValue]="e.id">{{ e.nombre }}</option>
+    </select>
+    <small class="error" *ngIf="form.controls.entrenadorId.invalid && form.controls.entrenadorId.touched">
+      Debes seleccionar un entrenador
+    </small>
+  </div>
+
+  <p class="error servidor" *ngIf="errorLocal">{{ errorLocal }}</p>
+
+  <button type="submit" class="btn btn-primario" [disabled]="enviando">
+    {{ enviando ? 'Guardando...' : 'Registrar Pokémon' }}
+  </button>
+</form>

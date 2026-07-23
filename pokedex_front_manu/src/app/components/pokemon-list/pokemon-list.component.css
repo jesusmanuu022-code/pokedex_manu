@@ -1,0 +1,119 @@
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.control label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.control select,
+.control input {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 180px;
+}
+
+.mensaje-error {
+  background: #fdecea;
+  color: #b71c1c;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.mensaje-vacio {
+  color: #757575;
+  font-style: italic;
+}
+
+.grid-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.tarjeta {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  background: white;
+}
+
+.tarjeta header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tipo-badge {
+  background: #e3f2fd;
+  color: #1565c0;
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+.entrenador,
+.fecha {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 0.25rem 0;
+}
+
+.nivel-info {
+  margin: 0.75rem 0;
+  font-size: 0.85rem;
+}
+
+.barra-nivel {
+  background: #eee;
+  border-radius: 4px;
+  height: 8px;
+  margin-top: 0.25rem;
+  overflow: hidden;
+}
+
+.barra-nivel-fill {
+  background: linear-gradient(90deg, #66bb6a, #43a047);
+  height: 100%;
+}
+
+.acciones-tarjeta {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.btn {
+  padding: 0.4rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-nivel {
+  background: #1976d2;
+  color: white;
+}
+
+.btn-nivel:disabled {
+  background: #90a4ae;
+  cursor: not-allowed;
+}
+
+.btn-eliminar {
+  background: #e53935;
+  color: white;
+}

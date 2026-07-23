@@ -1,0 +1,77 @@
+<section class="controles">
+  <div class="control">
+    <label for="filtroTipo">Filtrar por tipo</label>
+    <select
+      id="filtroTipo"
+      [ngModel]="pokemonService.filtroTipo()"
+      (ngModelChange)="onFiltroTipoChange($event)"
+    >
+      <option value="">Todos</option>
+      <option *ngFor="let t of tiposBase" [value]="t">{{ t }}</option>
+    </select>
+  </div>
+
+  <div class="control">
+    <label for="busqueda">Buscar por nombre</label>
+    <input
+      id="busqueda"
+      type="text"
+      placeholder="Ej. Pikachu"
+      [ngModel]="pokemonService.busqueda()"
+      (ngModelChange)="onBusquedaChange($event)"
+    />
+  </div>
+
+  <div class="control">
+    <label for="orden">Ordenar por nivel</label>
+    <select
+      id="orden"
+      [ngModel]="pokemonService.ordenNivel()"
+      (ngModelChange)="pokemonService.setOrdenNivel($event)"
+    >
+      <option [ngValue]="null">Sin orden</option>
+      <option value="asc">Menor a mayor</option>
+      <option value="desc">Mayor a menor</option>
+    </select>
+  </div>
+</section>
+
+<p class="mensaje-error" *ngIf="pokemonService.error() as error">{{ error }}</p>
+
+<p *ngIf="pokemonService.loading()">Cargando Pokémon...</p>
+
+<p class="mensaje-vacio" *ngIf="!pokemonService.loading() && pokemonService.pokemonesFiltrados().length === 0">
+  No hay Pokémon registrados
+</p>
+
+<div class="grid-tarjetas">
+  <article class="tarjeta" *ngFor="let p of pokemonService.pokemonesFiltrados()">
+    <header>
+      <h3>{{ p.nombre }}</h3>
+      <span class="tipo-badge">{{ p.tipo }}</span>
+    </header>
+
+    <p class="entrenador">Entrenador: {{ p.entrenadorNombre }}</p>
+    <p class="fecha" *ngIf="p.fechaCaptura">Capturado: {{ p.fechaCaptura }}</p>
+
+    <div class="nivel-info">
+      <span>Nivel {{ p.nivel }}</span>
+      <div class="barra-nivel">
+        <div class="barra-nivel-fill" [style.width.%]="porcentajeNivel(p.nivel)"></div>
+      </div>
+    </div>
+
+    <div class="acciones-tarjeta">
+      <button class="btn btn-nivel" (click)="subirNivel(p)" [disabled]="p.nivel >= 100">+1 Nivel</button>
+      <button class="btn btn-eliminar" (click)="pedirConfirmacionEliminar(p)">Eliminar</button>
+    </div>
+  </article>
+</div>
+
+<app-confirm-dialog
+  [visible]="dialogoVisible"
+  titulo="Eliminar Pokémon"
+  [mensaje]="'¿Seguro que quieres eliminar a ' + (pokemonAEliminar?.nombre ?? '') + '?'"
+  (confirmar)="confirmarEliminar()"
+  (cancelar)="cerrarDialogo()"
+></app-confirm-dialog>

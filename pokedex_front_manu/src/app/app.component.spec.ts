@@ -17,10 +17,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render the Pokédex title', () => {
+  it('should render the Pokédex brand in the sidebar', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Pokédex');
+    expect(compiled.querySelector('.logo')?.textContent).toContain('Pokédex');
   });
 });

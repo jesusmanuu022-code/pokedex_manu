@@ -6,6 +6,7 @@ export interface Pokemon {
   fechaCaptura: string | null;
   entrenadorId: number;
   entrenadorNombre: string;
+  imagen?: string | null;
 }
 
 export interface PokemonRequest {

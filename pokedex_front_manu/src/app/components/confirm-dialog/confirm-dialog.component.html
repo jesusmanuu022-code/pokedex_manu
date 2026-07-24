@@ -1,10 +1,20 @@
-<div class="overlay" *ngIf="visible">
-  <div class="dialog">
-    <h3>{{ titulo }}</h3>
-    <p>{{ mensaje }}</p>
-    <div class="acciones">
-      <button class="btn btn-secundario" (click)="cancelar.emit()">Cancelar</button>
-      <button class="btn btn-peligro" (click)="confirmar.emit()">Eliminar</button>
+<div class="cd-overlay" *ngIf="visible">
+  <div class="cd" role="alertdialog" aria-modal="true" aria-labelledby="cd-titulo">
+    <div class="cd__icono">
+      <mat-icon aria-hidden="true">warning</mat-icon>
+    </div>
+
+    <h3 id="cd-titulo" class="cd__titulo">{{ titulo }}</h3>
+    <p class="cd__mensaje">{{ mensaje }}</p>
+
+    <div class="cd__acciones">
+      <button mat-stroked-button class="cd__btn" (click)="cancelar.emit()">
+        Cancelar
+      </button>
+      <button mat-flat-button class="cd__btn btn-rojo-oscuro" (click)="confirmar.emit()">
+        <mat-icon>delete</mat-icon>
+        Eliminar
+      </button>
     </div>
   </div>
 </div>

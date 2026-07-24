@@ -1,19 +1,58 @@
-<div class="shell">
-  <app-sidebar></app-sidebar>
+<div class="splash" *ngIf="mostrarSplash" [class.splash--saliendo]="saliendo">
+  <div class="splash__anim" #splashAnim></div>
+  <span class="splash__texto">Pokédex</span>
+</div>
 
-  <div class="area-principal">
-    <app-header></app-header>
-
-    <main class="contenido">
-      <div class="layout">
-        <aside>
-          <app-pokemon-form (registrado)="onRegistrado()"></app-pokemon-form>
-        </aside>
-
-        <section class="listado">
-          <app-pokemon-list></app-pokemon-list>
-        </section>
+<div class="app-shell">
+  <!-- ===================== Navbar ===================== -->
+  <mat-toolbar class="navbar">
+    <div class="navbar__inner">
+      <div class="navbar__brand">
+        <img class="navbar__logo-img" src="/assets/pokemon-logo.png" alt="Pokémon" />
+        <div class="navbar__titles">
+          <span class="navbar__title">Pokédex</span>
+          <span class="navbar__subtitle">Gestor de colección</span>
+        </div>
       </div>
-    </main>
-  </div>
+
+      <div class="navbar__actions">
+        <mat-chip-set aria-label="Total de Pokémon">
+          <mat-chip class="navbar__counter" [disableRipple]="true">
+            <mat-icon matChipAvatar aria-hidden="true">catching_pokemon</mat-icon>
+            <strong>{{ pokemonService.pokemones().length }}</strong>&nbsp;Pokémon
+          </mat-chip>
+        </mat-chip-set>
+
+        <button
+          mat-flat-button
+          color="primary"
+          class="navbar__cta"
+          (click)="abrirRegistro()"
+          matTooltip="Registrar un nuevo Pokémon"
+        >
+          <mat-icon>add</mat-icon>
+          <span class="navbar__cta-texto">Registrar Pokémon</span>
+        </button>
+      </div>
+    </div>
+  </mat-toolbar>
+
+  <!-- ==================== Dashboard ==================== -->
+  <main class="dashboard">
+    <div class="dashboard__inner">
+      <section class="dashboard__section dashboard__section--list">
+        <app-pokemon-list></app-pokemon-list>
+      </section>
+    </div>
+  </main>
+
+  <!-- ===================== Footer ====================== -->
+  <footer class="app-footer">
+    <div class="app-footer__pista" aria-hidden="true">
+      <div class="app-footer__bulba" #bulba></div>
+    </div>
+    <div class="app-footer__inner">
+      <span>Pokédex · Gestiona tu colección de Pokémon</span>
+    </div>
+  </footer>
 </div>

@@ -1,0 +1,114 @@
+<mat-card class="pcard" [style.--hero]="tipoColor.dot">
+  <!-- ============ Hero tipo tile (color según el tipo) ============ -->
+  <header
+    class="pcard__hero"
+    (dblclick)="abrirDetalle.emit(pokemon)"
+    matTooltip="Doble clic para abrir la Pokédex"
+  >
+    <svg class="pcard__watermark" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4" />
+      <path d="M4 50h30M66 50h30" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+      <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-width="4" />
+      <circle cx="50" cy="50" r="6" fill="currentColor" />
+    </svg>
+
+    <div class="pcard__hero-top">
+      <button
+        mat-icon-button
+        class="pcard__menu-btn"
+        [matMenuTriggerFor]="menu"
+        aria-label="Más opciones"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+
+    <!-- Imagen centrada y completa (placeholder por ahora) -->
+    <div class="pcard__figura">
+      <img
+        *ngIf="pokemon.imagen; else placeholder"
+        class="pcard__img"
+        [src]="pokemon.imagen"
+        [alt]="pokemon.nombre"
+        loading="lazy"
+      />
+      <ng-template #placeholder>
+        <svg class="pcard__ph" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="5" />
+          <path d="M4 50h30M66 50h30" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+          <circle cx="50" cy="50" r="15" fill="#fff" stroke="currentColor" stroke-width="5" />
+          <circle cx="50" cy="50" r="6" fill="currentColor" />
+        </svg>
+      </ng-template>
+    </div>
+
+    <div class="pcard__hero-bottom">
+      <span class="pcard__numero">Nivel {{ pokemon.nivel }}</span>
+      <span class="pcard__nombre">{{ pokemon.nombre }}</span>
+    </div>
+  </header>
+
+  <!-- ==================== Contenido ==================== -->
+  <div class="pcard__body">
+    <span class="pcard__tipo">
+      <span class="pcard__tipo-dot"></span>
+      {{ pokemon.tipo }}
+    </span>
+
+    <dl class="pcard__datos">
+      <div class="pcard__dato">
+        <dt><mat-icon aria-hidden="true">person</mat-icon> Entrenador</dt>
+        <dd>{{ pokemon.entrenadorNombre }}</dd>
+      </div>
+      <div class="pcard__dato">
+        <dt><mat-icon aria-hidden="true">event</mat-icon> Fecha de captura</dt>
+        <dd>{{ pokemon.fechaCaptura || '—' }}</dd>
+      </div>
+    </dl>
+
+    <!-- Barra de HP (color dinámico según el porcentaje) -->
+    <div
+      class="pcard__hp"
+      [class.hp--alto]="nivelPorcentaje > 70"
+      [class.hp--medio]="nivelPorcentaje >= 40 && nivelPorcentaje <= 70"
+      [class.hp--bajo]="nivelPorcentaje < 40"
+    >
+      <div class="pcard__hp-cab">
+        <span class="pcard__hp-label">HP</span>
+        <span class="pcard__hp-num">{{ pokemon.nivel }}<small>/100</small></span>
+      </div>
+      <mat-progress-bar mode="determinate" [value]="nivelPorcentaje"></mat-progress-bar>
+    </div>
+
+    <!-- Acciones -->
+    <div class="pcard__acciones">
+      <button
+        mat-flat-button
+        class="pcard__btn btn-verde"
+        (click)="subirNivel.emit(pokemon)"
+        [disabled]="pokemon.nivel >= 100"
+        matTooltip="Subir un nivel"
+      >
+        <mat-icon>arrow_upward</mat-icon>
+        Subir Nivel
+      </button>
+      <button
+        mat-flat-button
+        class="pcard__btn btn-rojo-oscuro"
+        (click)="eliminar.emit(pokemon)"
+        matTooltip="Eliminar Pokémon"
+      >
+        <mat-icon>delete</mat-icon>
+        Eliminar
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ Menú (editar nivel exacto) ============ -->
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="editarNivel.emit(pokemon)">
+      <mat-icon>edit</mat-icon>
+      <span>Editar nivel</span>
+    </button>
+  </mat-menu>
+</mat-card>

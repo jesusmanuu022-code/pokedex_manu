@@ -1,32 +1,233 @@
-.shell {
-  display: flex;
-  min-height: 100vh;
-}
-
-.area-principal {
-  flex: 1;
+.app-shell {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  background: transparent;
+}
+
+/* ===================== Splash inicial ===================== */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  background: var(--fondo);
+  transition: opacity 550ms ease, visibility 550ms ease;
+}
+
+.splash--saliendo {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.splash__anim {
+  width: min(72vw, 440px);
+  height: min(72vw, 440px);
+}
+
+.splash__texto {
+  font-family: 'Pokemon GB', monospace;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: var(--rojo-primario);
+}
+
+/* ===================== Navbar ===================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 72px;
+  padding: 0;
+  background: var(--superficie);
+  color: var(--texto);
+  border-bottom: 1px solid var(--borde);
+  box-shadow: 0 1px 3px rgba(17, 17, 26, 0.05), 0 1px 2px rgba(17, 17, 26, 0.03);
+}
+
+.navbar__inner {
+  width: 100%;
+  max-width: 1400px;
+  height: 72px;
+  margin: 0 auto;
+  padding: 0 var(--sp-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+/* --- Marca (logo + títulos) --- */
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
   min-width: 0;
 }
 
-.contenido {
-  padding: 1.5rem;
+.navbar__logo-img {
+  height: 46px;
+  width: auto;
+  flex-shrink: 0;
+  /* PNG con fondo transparente: se funde de forma natural */
+  object-fit: contain;
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 1.5rem;
-  align-items: start;
+.navbar__titles {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  min-width: 0;
 }
 
+.navbar__title {
+  font-family: 'Pokemon GB', monospace;
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.35;
+  color: var(--texto);
+}
+
+.navbar__subtitle {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+/* --- Acciones (contador + CTA) --- */
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.navbar__counter {
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.navbar__counter mat-icon[matChipAvatar] {
+  color: var(--rojo-primario);
+}
+
+.navbar__cta {
+  height: 44px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--radio-pill);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: box-shadow var(--transicion-base), transform var(--transicion-rapida);
+}
+
+.navbar__cta:hover {
+  box-shadow: var(--sombra-elevada);
+}
+
+/* ==================== Dashboard ==================== */
+.dashboard {
+  flex: 1;
+  width: 100%;
+  padding: var(--sp-6) var(--sp-4);
+}
+
+.dashboard__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+/* ===================== Footer ====================== */
+.app-footer {
+  position: relative;
+  overflow: hidden;
+  background: var(--superficie);
+  border-top: 1px solid var(--borde);
+}
+
+/* Pista donde corre Bulbasaur (de izquierda a derecha) */
+.app-footer__pista {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app-footer__bulba {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 52px;
+  height: 52px;
+  animation: bulba-correr 9s linear infinite;
+}
+
+@keyframes bulba-correr {
+  from {
+    left: -70px;
+  }
+  to {
+    left: calc(100% + 70px);
+  }
+}
+
+.app-footer__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--sp-3) var(--sp-4);
+  color: var(--texto-secundario);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ==================== Responsive ==================== */
+/* Tablet grande: ocultar subtítulo del logo */
 @media (max-width: 900px) {
-  .shell {
-    flex-direction: column;
+  .navbar__subtitle {
+    display: none;
+  }
+}
+
+/* Tablet: ocultar el contador y compactar */
+@media (max-width: 760px) {
+  .navbar__counter {
+    display: none;
   }
 
-  .layout {
-    grid-template-columns: 1fr;
+  .navbar__inner {
+    padding: 0 var(--sp-2);
+  }
+
+  .dashboard {
+    padding: var(--sp-4) var(--sp-3);
+  }
+}
+
+/* Móvil: botón solo con icono */
+@media (max-width: 600px) {
+  .navbar__logo-img {
+    height: 38px;
+  }
+
+  .navbar__cta-texto {
+    display: none;
+  }
+
+  .navbar__cta {
+    min-width: 44px;
+    padding: 0 var(--sp-2);
+  }
+
+  .dashboard {
+    padding: var(--sp-3) var(--sp-2);
   }
 }

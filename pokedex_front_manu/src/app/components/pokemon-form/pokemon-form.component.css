@@ -1,90 +1,118 @@
-.form-registro {
-  background: var(--blanco);
-  border: 1px solid var(--gris-borde);
-  border-radius: var(--radio-base);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
+:host {
+  position: relative;
+  display: block;
 }
 
-.form-registro h2 {
-  margin: 0 0 0.25rem;
-  font-size: 1.1rem;
-}
-
-.campo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-label {
-  font-weight: 600;
-  font-size: 0.82rem;
-  color: var(--gris-texto-oscuro);
-}
-
-.input-icono {
+.pf__titulo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  border: 1px solid var(--gris-borde);
-  border-radius: 8px;
-  padding: 0.55rem 0.75rem;
-  color: var(--gris-texto);
-  background: var(--gris-fondo);
+  gap: var(--sp-1);
+  font-weight: 600;
 }
 
-.input-icono:focus-within {
-  border-color: var(--rojo-primario);
-  background: var(--blanco);
+.pf__titulo mat-icon {
+  color: var(--rojo-primario);
 }
 
-.input-icono input,
-.input-icono select {
-  border: none;
-  background: transparent;
-  outline: none;
-  font-size: 0.9rem;
+/* ===================== Grid de campos ===================== */
+.pf__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3) var(--sp-3);
+  padding-top: var(--sp-2);
+}
+
+.pf__grid mat-form-field {
   width: 100%;
-  color: var(--gris-texto-oscuro);
 }
 
-.error {
-  color: #d32f2f;
-  font-size: 0.78rem;
+/* Campo a todo el ancho */
+.pf__full {
+  grid-column: 1 / -1;
 }
 
-.error.servidor {
+/* ===================== Error del servidor ===================== */
+.pf__error-servidor {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: var(--sp-1) 0 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radio-sm);
+  background: var(--rojo-suave);
+  color: var(--rojo-oscuro);
   font-weight: 600;
+  font-size: 0.85rem;
 }
 
-.nota-obligatorios {
-  font-size: 0.75rem;
-  color: var(--gris-texto);
+.pf__error-servidor mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+/* ===================== Acciones ===================== */
+.pf__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3) var(--sp-3);
+}
+
+/* ===================== Overlay de carga ===================== */
+.pf__cargando {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(2px);
+  animation: pf-fade 160ms ease;
+}
+
+.pf__pokebola {
+  width: 76px;
+  height: 76px;
+  transform-origin: 50% 50%;
+  animation: pf-girar 0.9s linear infinite;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12));
+}
+
+.pf__cargando-texto {
   margin: 0;
-}
-
-.btn {
-  padding: 0.7rem 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.95rem;
   font-weight: 600;
+  color: var(--texto);
 }
 
-.btn-primario {
-  background: var(--rojo-primario);
-  color: white;
+.pf__cargando mat-progress-bar {
+  width: 220px;
+  border-radius: var(--radio-pill);
+  overflow: hidden;
 }
 
-.btn-primario:hover:not(:disabled) {
-  background: var(--rojo-hover);
+@keyframes pf-girar {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.btn-primario:disabled {
-  background: #ef9a9a;
-  cursor: not-allowed;
+@keyframes pf-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 560px) {
+  .pf__grid {
+    grid-template-columns: 1fr;
+  }
 }

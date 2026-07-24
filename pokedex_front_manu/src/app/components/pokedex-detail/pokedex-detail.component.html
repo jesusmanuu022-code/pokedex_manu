@@ -1,0 +1,66 @@
+<div class="pokedex">
+  <img class="pokedex__frame" src="/assets/pokedex-frame.png" alt="Pokédex" />
+
+  <!-- ===== Pantalla blanca: imagen + nombre ===== -->
+  <div class="pokedex__pantalla" [class.pokedex__pantalla--flash]="flash">
+    <div class="pokedex__cab">
+      <span class="pokedex__tipo" [style.--t]="tipoColor.dot">{{ actual.tipo }}</span>
+      <span class="pokedex__num">{{ numero }}</span>
+    </div>
+
+    <div class="pokedex__figura">
+      <img
+        *ngIf="actual.imagen; else ph"
+        class="pokedex__poke"
+        [src]="actual.imagen"
+        [alt]="actual.nombre"
+      />
+      <ng-template #ph>
+        <svg class="pokedex__pb" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="45" fill="#fff" stroke="#2c2c2c" stroke-width="5" />
+          <path d="M5 50a45 45 0 0 1 90 0Z" fill="#ef5350" />
+          <line x1="5" y1="50" x2="95" y2="50" stroke="#2c2c2c" stroke-width="5" />
+          <circle cx="50" cy="50" r="15" fill="#fff" stroke="#2c2c2c" stroke-width="5" />
+          <circle cx="50" cy="50" r="6" fill="#fff" stroke="#2c2c2c" stroke-width="3" />
+        </svg>
+      </ng-template>
+    </div>
+
+    <div class="pokedex__nombre">{{ actual.nombre }}</div>
+  </div>
+
+  <!-- ===== LCD verde: datos ===== -->
+  <div class="pokedex__lcd" [class.pokedex__pantalla--flash]="flash">
+    <div class="pokedex__lcd-linea">NIVEL <b>{{ actual.nivel }}</b>/100</div>
+    <div class="pokedex__lcd-linea">ENTR: {{ actual.entrenadorNombre }}</div>
+    <div class="pokedex__lcd-linea">CAP: {{ actual.fechaCaptura || '—' }}</div>
+  </div>
+
+  <!-- ===== Flechas D-pad ===== -->
+  <button
+    type="button"
+    class="pokedex__arrow pokedex__arrow--izq"
+    (click)="anterior()"
+    aria-label="Pokémon anterior"
+  ></button>
+  <button
+    type="button"
+    class="pokedex__arrow pokedex__arrow--der"
+    (click)="siguiente()"
+    aria-label="Pokémon siguiente"
+  ></button>
+
+  <!-- ===== Botones X / ✓ (cerrar) ===== -->
+  <button
+    type="button"
+    class="pokedex__btn pokedex__btn--x"
+    (click)="cerrar()"
+    aria-label="Cerrar"
+  ></button>
+  <button
+    type="button"
+    class="pokedex__btn pokedex__btn--ok"
+    (click)="cerrar()"
+    aria-label="Cerrar"
+  ></button>
+</div>

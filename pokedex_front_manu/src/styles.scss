@@ -1,0 +1,179 @@
+// ============================================================
+//  Pokédex · Tema global (Angular Material 17 · M2)
+//  Paleta Pokémon + tipografía Poppins + tokens (escala 8px)
+// ============================================================
+
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// ---- Paletas (basadas en las paletas M2 de Material) ---------
+// primary  → rojo principal  #EF5350  (red 400),  oscuro #D32F2F (red 700)
+// accent   → azul            #42A5F5  (blue 400)
+// warn     → rojo oscuro     #D32F2F  (red 700)
+$pokedex-primary: mat.define-palette(mat.$red-palette, 400, 300, 700);
+$pokedex-accent: mat.define-palette(mat.$blue-palette, 400, 200, 700);
+$pokedex-warn: mat.define-palette(mat.$red-palette, 700);
+
+// ---- Tipografía Poppins para todos los componentes Material --
+$pokedex-typography: mat.define-typography-config(
+  $font-family: '"Poppins", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+);
+
+$pokedex-theme: mat.define-light-theme((
+  color: (
+    primary: $pokedex-primary,
+    accent: $pokedex-accent,
+    warn: $pokedex-warn,
+  ),
+  typography: $pokedex-typography,
+  density: 0,
+));
+
+@include mat.all-component-themes($pokedex-theme);
+@include mat.typography-hierarchy($pokedex-typography);
+
+// ============================================================
+//  Tokens de diseño (CSS custom properties)
+// ============================================================
+:root {
+  // -- Paleta de marca --
+  --rojo-primario: #ef5350;
+  --rojo-oscuro: #d32f2f;
+  --rojo-hover: #e53935;
+  --rojo-suave: #ffebee;
+  --azul: #42a5f5;
+  --verde: #66bb6a;
+
+  // -- Neutros --
+  --fondo: #f7f8fc;
+  --superficie: #ffffff;
+  --texto: #2c2c2c;
+  --texto-secundario: #757575;
+  --borde: #eaeaea;
+
+  // -- Alias de compatibilidad con el CSS existente --
+  --gris-fondo: var(--fondo);
+  --gris-borde: var(--borde);
+  --gris-texto: var(--texto-secundario);
+  --gris-texto-oscuro: var(--texto);
+  --blanco: var(--superficie);
+
+  // -- Tipografía --
+  --fuente-base: 'Poppins', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  // -- Escala de espaciado (base 8px) --
+  --sp-1: 0.5rem;   //  8px
+  --sp-2: 1rem;     // 16px
+  --sp-3: 1.5rem;   // 24px
+  --sp-4: 2rem;     // 32px
+  --sp-5: 2.5rem;   // 40px
+  --sp-6: 3rem;     // 48px
+  --sp-8: 4rem;     // 64px
+
+  // -- Radios --
+  --radio-sm: 8px;
+  --radio-base: 12px;
+  --radio-lg: 20px;
+  --radio-pill: 999px;
+
+  // -- Sombras suaves con profundidad --
+  --sombra-tarjeta: 0 2px 8px rgba(17, 17, 26, 0.06), 0 1px 2px rgba(17, 17, 26, 0.04);
+  --sombra-elevada: 0 8px 24px rgba(17, 17, 26, 0.08), 0 2px 8px rgba(17, 17, 26, 0.05);
+  --sombra-flotante: 0 16px 40px rgba(17, 17, 26, 0.12), 0 4px 12px rgba(17, 17, 26, 0.06);
+
+  // -- Transiciones sutiles --
+  --transicion-rapida: 140ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transicion-base: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ============================================================
+//  Base global
+// ============================================================
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--fondo);
+  background-image:
+    linear-gradient(rgba(247, 248, 252, 0.62), rgba(247, 248, 252, 0.62)),
+    url('/assets/pokemon-bg.jpg');
+  background-repeat: repeat;
+  background-size: auto, 380px auto;
+  background-attachment: fixed;
+  color: var(--texto);
+  font-family: var(--fuente-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+}
+
+// ============================================================
+//  Botones · acabado consistente (redondeado + hover + transición)
+// ============================================================
+.mat-mdc-unelevated-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button {
+  border-radius: var(--radio-pill);
+  transition: box-shadow var(--transicion-base), transform var(--transicion-rapida),
+    background-color var(--transicion-rapida);
+}
+
+.mat-mdc-unelevated-button:not(:disabled):hover,
+.mat-mdc-raised-button:not(:disabled):hover,
+.mat-mdc-outlined-button:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: var(--sombra-elevada);
+}
+
+// -- Variante Verde (p. ej. Subir Nivel) --
+.btn-verde {
+  --mdc-filled-button-container-color: #43a047;
+  --mdc-filled-button-label-text-color: #ffffff;
+}
+
+.btn-verde:not(:disabled):hover {
+  --mdc-filled-button-container-color: #388e3c;
+}
+
+// -- Variante Rojo oscuro (p. ej. Eliminar) --
+.btn-rojo-oscuro {
+  --mdc-filled-button-container-color: var(--rojo-oscuro);
+  --mdc-filled-button-label-text-color: #ffffff;
+}
+
+.btn-rojo-oscuro:not(:disabled):hover {
+  --mdc-filled-button-container-color: #b71c1c;
+}
+
+// ============================================================
+//  Diálogo Pokédex · superficie transparente (solo se ve el marco)
+// ============================================================
+.pokedex-dialog .mat-mdc-dialog-surface {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+  padding: 0;
+}
+
+// ============================================================
+//  Fuente pixel "Pokemon GB" (para el título Pokédex)
+// ============================================================
+@font-face {
+  font-family: 'Pokemon GB';
+  src: url('/assets/fonts/pokemon-gb.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

@@ -80,7 +80,9 @@ export class PokemonService {
     this.http
       .get<Pokemon[]>(this.baseUrl, { params })
       .pipe(
-        tap((data) => this.pokemonesSignal.set(data)),
+        // Orden estable por id: evita que la tarjeta "salte" de sitio
+        // (y parezca cambiar de color) tras actualizar el nivel.
+        tap((data) => this.pokemonesSignal.set([...data].sort((a, b) => a.id - b.id))),
         catchError((err) => this.manejarError(err)),
         finalize(() => this.loadingSignal.set(false))
       )
@@ -98,7 +100,11 @@ export class PokemonService {
   actualizarNivel(id: number, request: NivelUpdateRequest) {
     this.errorSignal.set(null);
     return this.http.patch<Pokemon>(`${this.baseUrl}/${id}/nivel`, request).pipe(
-      tap(() => this.cargar()),
+      // Actualiza solo ese Pokémon en el sitio (sin recargar toda la lista,
+      // así no parpadea el "Cargando...").
+      tap((actualizado) =>
+        this.pokemonesSignal.update((lista) => lista.map((p) => (p.id === id ? actualizado : p)))
+      ),
       catchError((err) => this.manejarError(err))
     );
   }
@@ -106,7 +112,7 @@ export class PokemonService {
   eliminar(id: number) {
     this.errorSignal.set(null);
     return this.http.delete<void>(`${this.baseUrl}/${id}`).pipe(
-      tap(() => this.cargar()),
+      tap(() => this.pokemonesSignal.update((lista) => lista.filter((p) => p.id !== id))),
       catchError((err) => this.manejarError(err))
     );
   }

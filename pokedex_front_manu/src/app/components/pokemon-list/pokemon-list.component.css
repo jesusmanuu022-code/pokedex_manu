@@ -1,13 +1,26 @@
+/* ===================== Buscador ===================== */
+.buscador {
+  width: 100%;
+  margin-bottom: var(--sp-3);
+  --mdc-outlined-text-field-container-shape: var(--radio-pill);
+}
+
+.buscador mat-icon[matPrefix] {
+  margin: 0 var(--sp-1) 0 var(--sp-1);
+  color: var(--texto-secundario);
+}
+
 .barra-filtros {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: 1.25rem;
-  background: var(--blanco);
-  border: 1px solid var(--gris-borde);
+  gap: var(--sp-3);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
   border-radius: var(--radio-base);
-  padding: 1rem 1.25rem;
-  margin-bottom: 1.25rem;
+  padding: var(--sp-2) var(--sp-3);
+  margin-bottom: var(--sp-3);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 .control {
@@ -19,16 +32,19 @@
 .control label {
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--gris-texto);
+  color: var(--texto-secundario);
 }
 
 .control select,
 .control input {
-  padding: 0.45rem 0.7rem;
-  border: 1px solid var(--gris-borde);
-  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
   min-width: 170px;
   font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--texto);
+  background: var(--superficie);
 }
 
 .btn-limpiar {
@@ -36,32 +52,38 @@
   background: var(--rojo-suave);
   color: var(--rojo-primario);
   border: none;
-  border-radius: 6px;
-  padding: 0.5rem 0.9rem;
+  border-radius: var(--radio-sm);
+  padding: 0.55rem 0.9rem;
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
   height: fit-content;
+  transition: background var(--transicion-rapida);
+}
+
+.btn-limpiar:hover {
+  background: #ffd9d4;
 }
 
 .barra-resultados {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: var(--sp-3);
 }
 
 .barra-resultados h2 {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   margin: 0;
 }
 
 .toggle-vista {
   display: flex;
   gap: 0.25rem;
-  background: var(--gris-fondo);
-  border: 1px solid var(--gris-borde);
-  border-radius: 8px;
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
   padding: 0.2rem;
 }
 
@@ -71,216 +93,131 @@
   padding: 0.35rem 0.5rem;
   border-radius: 6px;
   cursor: pointer;
-  color: var(--gris-texto);
+  color: var(--texto-secundario);
   display: flex;
+  transition: background var(--transicion-rapida), color var(--transicion-rapida);
 }
 
 .toggle-vista button.activo {
-  background: var(--blanco);
+  background: var(--superficie);
   color: var(--rojo-primario);
   box-shadow: var(--sombra-tarjeta);
 }
 
 .mensaje-error {
   background: var(--rojo-suave);
-  color: #b71c1c;
+  color: var(--rojo-oscuro);
   padding: 0.75rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  border-radius: var(--radio-sm);
+  margin-bottom: var(--sp-3);
+}
+
+/* Bloque de error con Snorlax dormido */
+.bloque-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  text-align: center;
+  padding: var(--sp-3) var(--sp-3) var(--sp-4);
+  margin-bottom: var(--sp-3);
+  background: var(--rojo-suave);
+  border: 1px solid #f3c6bd;
+  border-radius: var(--radio-base);
+}
+
+.bloque-error__snorlax {
+  width: 150px;
+  height: 150px;
+}
+
+.bloque-error__texto {
+  margin: 0;
+  color: var(--rojo-oscuro);
+  font-weight: 600;
 }
 
 .mensaje-vacio {
-  color: #757575;
+  color: var(--texto-secundario);
   font-style: italic;
 }
 
+/* ===================== Grid de tarjetas ===================== */
+/* Desktop: 4 tarjetas · Tablet: 2 · Móvil: 1 */
 .grid-tarjetas {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+  perspective: 1500px;
+}
+
+/* --- Carta con dos caras (flip al aparecer) --- */
+.flip {
+  position: relative;
+  transform-style: preserve-3d;
+  animation: flip-in 720ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.flip__front,
+.flip__back {
+  backface-visibility: hidden;
+}
+
+.flip__back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+  /* halo claro detrás + degradado rojo, para que la pokébola resalte */
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.28) 0%, transparent 34%),
+    radial-gradient(circle at 50% 42%, #ff6b6b 0%, var(--rojo-oscuro) 82%);
+  box-shadow: var(--sombra-tarjeta);
+}
+
+.flip__pokeball {
+  width: 62%;
+  height: auto;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.35));
+}
+
+@keyframes flip-in {
+  from {
+    transform: rotateY(180deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
 }
 
 .grid-tarjetas.vista-lista {
   grid-template-columns: 1fr;
 }
 
-.tarjeta {
-  border: 1px solid var(--gris-borde);
-  border-radius: var(--radio-base);
-  padding: 1rem;
-  background: var(--blanco);
-  box-shadow: var(--sombra-tarjeta);
+/* En vista lista no aplicamos el flip (las tarjetas anchas no lucen bien) */
+.grid-tarjetas.vista-lista .flip {
+  animation: none;
+  transform: none;
+  transform-style: flat;
 }
 
-.tarjeta header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.5rem;
+.grid-tarjetas.vista-lista .flip__back {
+  display: none;
 }
 
-.identidad {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+/* Tablet */
+@media (max-width: 1024px) {
+  .grid-tarjetas {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.identidad h3 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.menu-contenedor {
-  position: relative;
-}
-
-.btn-kebab {
-  background: transparent;
-  border: none;
-  font-size: 1.1rem;
-  cursor: pointer;
-  color: var(--gris-texto);
-  line-height: 1;
-  padding: 0.15rem 0.4rem;
-}
-
-.menu-desplegable {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  background: var(--blanco);
-  border: 1px solid var(--gris-borde);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  z-index: 20;
-  min-width: 140px;
-  overflow: hidden;
-}
-
-.menu-desplegable button {
-  display: block;
-  width: 100%;
-  text-align: left;
-  border: none;
-  background: transparent;
-  padding: 0.55rem 0.8rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.menu-desplegable button:hover {
-  background: var(--gris-fondo);
-}
-
-.menu-desplegable button.peligro {
-  color: #c62828;
-}
-
-.tipo-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.tipo-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-
-.entrenador,
-.fecha,
-.nivel-texto {
-  font-size: 0.82rem;
-  color: var(--gris-texto);
-  margin: 0.2rem 0;
-}
-
-.nivel-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0.6rem 0 0.75rem;
-  font-size: 0.78rem;
-  color: var(--gris-texto);
-}
-
-.barra-nivel {
-  flex: 1;
-  background: #eee;
-  border-radius: 4px;
-  height: 8px;
-  overflow: hidden;
-}
-
-.barra-nivel-fill {
-  background: linear-gradient(90deg, #66bb6a, #43a047);
-  height: 100%;
-}
-
-.porcentaje {
-  min-width: 32px;
-  text-align: right;
-}
-
-.acciones-tarjeta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.btn {
-  padding: 0.4rem 0.65rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.78rem;
-  flex: 1;
-  white-space: nowrap;
-}
-
-.btn-nivel {
-  background: #2e7d32;
-  color: white;
-}
-
-.btn-nivel:disabled {
-  background: #90a4ae;
-  cursor: not-allowed;
-}
-
-.btn-editar {
-  background: var(--rojo-suave);
-  color: var(--rojo-primario);
-  border: 1px solid #f3c6bd;
-}
-
-.btn-eliminar {
-  background: #e53935;
-  color: white;
-}
-
-.vista-lista .tarjeta {
-  display: grid;
-  grid-template-columns: minmax(180px, 260px) auto 1fr auto;
-  align-items: center;
-  gap: 1rem;
-}
-
-.vista-lista .tarjeta header {
-  margin-bottom: 0;
-}
-
-.vista-lista .nivel-info {
-  margin: 0;
-  min-width: 160px;
-}
-
-.vista-lista .acciones-tarjeta {
-  flex-wrap: nowrap;
+/* Móvil */
+@media (max-width: 600px) {
+  .grid-tarjetas {
+    grid-template-columns: 1fr;
+  }
 }

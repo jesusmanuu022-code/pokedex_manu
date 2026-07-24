@@ -1,42 +1,87 @@
-.overlay {
+.cd-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  padding: var(--sp-3);
+  background: rgba(20, 22, 30, 0.45);
+  backdrop-filter: blur(3px);
+  animation: cd-fade 160ms ease;
 }
 
-.dialog {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  min-width: 300px;
-  max-width: 90vw;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+.cd {
+  width: 100%;
+  max-width: 400px;
+  padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  text-align: center;
+  background: var(--superficie);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-flotante);
+  animation: cd-pop 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.acciones {
+/* Icono de advertencia en badge circular */
+.cd__icono {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto var(--sp-3);
   display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff4e5;
+  color: #f59e0b;
 }
 
-.btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
+.cd__icono mat-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 34px;
 }
 
-.btn-secundario {
-  background: #e0e0e0;
+.cd__titulo {
+  margin: 0 0 var(--sp-1);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--texto);
 }
 
-.btn-peligro {
-  background: #d32f2f;
-  color: white;
+.cd__mensaje {
+  margin: 0 auto var(--sp-4);
+  max-width: 320px;
+  color: var(--texto-secundario);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.cd__acciones {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-2);
+}
+
+.cd__btn {
+  min-width: 128px;
+}
+
+@keyframes cd-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cd-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

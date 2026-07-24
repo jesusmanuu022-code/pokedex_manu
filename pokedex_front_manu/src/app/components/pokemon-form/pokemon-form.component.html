@@ -1,90 +1,85 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-registro">
-  <h2>Registrar nuevo Pokémon</h2>
+<h2 mat-dialog-title class="pf__titulo">
+  <mat-icon aria-hidden="true">catching_pokemon</mat-icon>
+  Registrar nuevo Pokémon
+</h2>
 
-  <div class="campo">
-    <label for="nombre">Nombre *</label>
-    <div class="input-icono">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-        <circle cx="12" cy="12" r="2.5" fill="currentColor" />
-      </svg>
-      <input id="nombre" type="text" formControlName="nombre" placeholder="Ej. Pikachu" />
-    </div>
-    <small class="error" *ngIf="form.controls.nombre.invalid && form.controls.nombre.touched">
-      El nombre es obligatorio
-    </small>
-  </div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="pf__grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <mat-icon matPrefix aria-hidden="true">badge</mat-icon>
+        <input matInput formControlName="nombre" placeholder="Ej. Pikachu" />
+        <mat-error>El nombre es obligatorio</mat-error>
+      </mat-form-field>
 
-  <div class="campo">
-    <label for="tipo">Tipo *</label>
-    <div class="input-icono">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-        <path
-          d="m12 2 8.5 8.5a2 2 0 0 1 0 2.8L14 20a2 2 0 0 1-2.8 0L3 11.5V4a2 2 0 0 1 2-2h7Z"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linejoin="round"
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo</mat-label>
+        <mat-icon matPrefix aria-hidden="true">category</mat-icon>
+        <mat-select formControlName="tipo" placeholder="Selecciona un tipo">
+          <mat-option *ngFor="let t of tipos" [value]="t">{{ t }}</mat-option>
+        </mat-select>
+        <mat-error>El tipo es obligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nivel</mat-label>
+        <mat-icon matPrefix aria-hidden="true">military_tech</mat-icon>
+        <input matInput type="number" formControlName="nivel" min="1" max="100" />
+        <mat-error>El nivel debe estar entre 1 y 100</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de captura</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="fechaCaptura"
+          readonly
+          (click)="picker.open()"
         />
-        <circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" />
-      </svg>
-      <input id="tipo" type="text" formControlName="tipo" placeholder="Ej. Eléctrico" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="pf__full">
+        <mat-label>Entrenador</mat-label>
+        <mat-icon matPrefix aria-hidden="true">person</mat-icon>
+        <mat-select formControlName="entrenadorId" placeholder="Selecciona un entrenador">
+          <mat-option *ngFor="let e of entrenadores" [value]="e.id">{{ e.nombre }}</mat-option>
+        </mat-select>
+        <mat-error>Debes seleccionar un entrenador</mat-error>
+      </mat-form-field>
     </div>
-    <small class="error" *ngIf="form.controls.tipo.invalid && form.controls.tipo.touched">
-      El tipo es obligatorio
-    </small>
-  </div>
 
-  <div class="campo">
-    <label for="nivel">Nivel *</label>
-    <div class="input-icono">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-        <path
-          d="m12 3 2.6 5.6 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6-4.4-4.1 6-.7L12 3Z"
-          stroke="currentColor"
-          stroke-width="1.4"
-          stroke-linejoin="round"
-        />
-      </svg>
-      <input id="nivel" type="number" formControlName="nivel" min="1" max="100" placeholder="Ej. 5" />
-    </div>
-    <small class="error" *ngIf="form.controls.nivel.invalid && form.controls.nivel.touched">
-      El nivel debe estar entre 1 y 100
-    </small>
-  </div>
+    <p class="pf__error-servidor" *ngIf="errorLocal">
+      <mat-icon aria-hidden="true">error_outline</mat-icon>
+      {{ errorLocal }}
+    </p>
+  </mat-dialog-content>
 
-  <div class="campo">
-    <label for="fechaCaptura">Fecha de captura</label>
-    <div class="input-icono">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-        <rect x="3.5" y="5" width="17" height="15" rx="2" stroke="currentColor" stroke-width="1.5" />
-        <path d="M3.5 9.5h17M8 3v3.5M16 3v3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-      </svg>
-      <input id="fechaCaptura" type="date" formControlName="fechaCaptura" />
-    </div>
-  </div>
-
-  <div class="campo">
-    <label for="entrenadorId">Entrenador *</label>
-    <div class="input-icono">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.5" />
-        <path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-      </svg>
-      <select id="entrenadorId" formControlName="entrenadorId">
-        <option [ngValue]="null">Selecciona un entrenador</option>
-        <option *ngFor="let e of entrenadores" [ngValue]="e.id">{{ e.nombre }}</option>
-      </select>
-    </div>
-    <small class="error" *ngIf="form.controls.entrenadorId.invalid && form.controls.entrenadorId.touched">
-      Debes seleccionar un entrenador
-    </small>
-  </div>
-
-  <p class="error servidor" *ngIf="errorLocal">{{ errorLocal }}</p>
-
-  <button type="submit" class="btn btn-primario" [disabled]="enviando">
-    {{ enviando ? 'Guardando...' : 'Registrar Pokémon' }}
-  </button>
-
-  <p class="nota-obligatorios">* Campos obligatorios</p>
+  <mat-dialog-actions class="pf__acciones">
+    <button mat-stroked-button type="button" (click)="cerrar()" [disabled]="enviando">
+      Cancelar
+    </button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="enviando">
+      <mat-icon>check</mat-icon>
+      {{ enviando ? 'Guardando...' : 'Registrar Pokémon' }}
+    </button>
+  </mat-dialog-actions>
 </form>
+
+<!-- Overlay de carga: pokébola girando + barra de progreso -->
+<div class="pf__cargando" *ngIf="enviando">
+  <svg class="pf__pokebola" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="50" r="45" fill="#ffffff" stroke="#2c2c2c" stroke-width="5" />
+    <path d="M5 50a45 45 0 0 1 90 0Z" fill="#ef5350" />
+    <line x1="5" y1="50" x2="95" y2="50" stroke="#2c2c2c" stroke-width="5" />
+    <circle cx="50" cy="50" r="15" fill="#ffffff" stroke="#2c2c2c" stroke-width="5" />
+    <circle cx="50" cy="50" r="6" fill="#ffffff" stroke="#2c2c2c" stroke-width="3" />
+  </svg>
+
+  <p class="pf__cargando-texto">Registrando Pokémon…</p>
+
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>

@@ -1,27 +1,60 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import lottie, { AnimationItem } from 'lottie-web';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { Pokemon } from '../../models/pokemon.model';
-import { colorPorTipo } from '../../shared/tipo-color.util';
-import { PokemonAvatarComponent } from '../../shared/pokemon-avatar/pokemon-avatar.component';
 import { PokemonService } from '../../services/pokemon.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { EditNivelDialogComponent } from '../edit-nivel-dialog/edit-nivel-dialog.component';
+import { PokedexDetailComponent } from '../pokedex-detail/pokedex-detail.component';
+import { PokemonCardComponent } from '../pokemon-card/pokemon-card.component';
 
 const TIPOS_BASE = ['Agua', 'Fuego', 'Planta', 'Eléctrico', 'Roca', 'Volador', 'Veneno', 'Fantasma', 'Lucha', 'Normal'];
 
 @Component({
   selector: 'app-pokemon-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, ConfirmDialogComponent, EditNivelDialogComponent, PokemonAvatarComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    ConfirmDialogComponent,
+    EditNivelDialogComponent,
+    PokemonCardComponent,
+  ],
   templateUrl: './pokemon-list.component.html',
   styleUrl: './pokemon-list.component.css',
 })
-export class PokemonListComponent implements OnInit {
+export class PokemonListComponent implements OnInit, OnDestroy {
   readonly pokemonService = inject(PokemonService);
+  private readonly dialog = inject(MatDialog);
+
+  private snorlaxAnim?: AnimationItem;
+
+  /** Carga/destruye la animación de Snorlax cuando aparece/desaparece el error. */
+  @ViewChild('snorlaxError') set snorlaxError(ref: ElementRef<HTMLElement> | undefined) {
+    if (ref) {
+      this.snorlaxAnim ??= lottie.loadAnimation({
+        container: ref.nativeElement,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/assets/snorlax.json',
+      });
+    } else {
+      this.snorlaxAnim?.destroy();
+      this.snorlaxAnim = undefined;
+    }
+  }
 
   readonly tiposBase = TIPOS_BASE;
-  readonly colorPorTipo = colorPorTipo;
 
   vista: 'grid' | 'lista' = 'grid';
 
@@ -31,19 +64,16 @@ export class PokemonListComponent implements OnInit {
   editDialogoVisible = false;
   pokemonAEditar: Pokemon | null = null;
 
-  menuAbiertoId: number | null = null;
-
-  constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (this.menuAbiertoId !== null && !this.elementRef.nativeElement.contains(event.target as Node)) {
-      this.menuAbiertoId = null;
-    }
-  }
-
   ngOnInit(): void {
     this.pokemonService.cargar();
+  }
+
+  ngOnDestroy(): void {
+    this.snorlaxAnim?.destroy();
+  }
+
+  trackById(_index: number, pokemon: Pokemon): number {
+    return pokemon.id;
   }
 
   onFiltroTipoChange(tipo: string): void {
@@ -62,12 +92,15 @@ export class PokemonListComponent implements OnInit {
     this.vista = vista;
   }
 
-  toggleMenu(pokemon: Pokemon): void {
-    this.menuAbiertoId = this.menuAbiertoId === pokemon.id ? null : pokemon.id;
-  }
-
-  cerrarMenu(): void {
-    this.menuAbiertoId = null;
+  abrirDetalle(pokemon: Pokemon): void {
+    const lista = this.pokemonService.pokemonesFiltrados();
+    const index = lista.findIndex((p) => p.id === pokemon.id);
+    this.dialog.open(PokedexDetailComponent, {
+      panelClass: 'pokedex-dialog',
+      autoFocus: false,
+      maxWidth: '95vw',
+      data: { pokemones: lista, index },
+    });
   }
 
   subirNivel(pokemon: Pokemon): void {
@@ -78,7 +111,6 @@ export class PokemonListComponent implements OnInit {
   abrirEditarNivel(pokemon: Pokemon): void {
     this.pokemonAEditar = pokemon;
     this.editDialogoVisible = true;
-    this.menuAbiertoId = null;
   }
 
   guardarNivelEditado(nuevoNivel: number): void {
@@ -96,7 +128,6 @@ export class PokemonListComponent implements OnInit {
   pedirConfirmacionEliminar(pokemon: Pokemon): void {
     this.pokemonAEliminar = pokemon;
     this.dialogoVisible = true;
-    this.menuAbiertoId = null;
   }
 
   confirmarEliminar(): void {
@@ -109,9 +140,5 @@ export class PokemonListComponent implements OnInit {
   cerrarDialogo(): void {
     this.dialogoVisible = false;
     this.pokemonAEliminar = null;
-  }
-
-  porcentajeNivel(nivel: number): number {
-    return Math.min(100, Math.round((nivel / 100) * 100));
   }
 }
